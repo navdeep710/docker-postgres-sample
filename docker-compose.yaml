@@ -1,0 +1,31 @@
+version: '2.1'
+services:
+  postgres:
+    image: postgres
+    container_name: flask-db
+    volumes:
+      - flask-dbdata:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=flask
+      - POSTGRES_PASSWORD=flask
+      - POSTGRES_SSLMODE=prefer
+
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    environment:
+      - DBPASS=flask
+      - DBHOST=postgres
+      - DBUSER=flask
+      - DBNAME=postgres
+    depends_on:
+      - postgres
+
+volumes:
+  flask-dbdata:
+
